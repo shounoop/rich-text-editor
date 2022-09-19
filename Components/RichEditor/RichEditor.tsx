@@ -1,6 +1,6 @@
 // TypeScript users only add this code
-import { useCallback, useState } from 'react';
-import { BaseEditor, createEditor, Editor, Text, Transforms } from 'slate';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { BaseEditor, createEditor, Descendant, Editor, Text, Transforms } from 'slate';
 import { DefaultElement, Editable, ReactEditor, Slate, withReact } from 'slate-react';
 import CodeElement from './CodeElement';
 import Leaf from './Leaf';
@@ -58,18 +58,16 @@ const CustomEditor = {
 	},
 };
 
-const initialValue: any = [
-	{
-		type: 'paragraph',
-		children: [{ text: 'A line of text in a paragraph.' }],
-	},
-];
-
 const RichEditor = () => {
 	const [editor] = useState(() => withReact(createEditor()));
+	const initialValue = [
+		{
+			type: 'paragraph',
+			children: [{ text: 'A line of text in a paragraph.' }],
+		},
+	] as Descendant[];
 
 	const renderElement = useCallback((props: any) => {
-		console.log('type', props.element.type);
 		switch (props.element.type) {
 			case 'code':
 				return <CodeElement {...props} />;
